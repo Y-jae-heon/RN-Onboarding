@@ -1,97 +1,155 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 프론트엔드 프로젝트 아키텍처 & 컨벤션 가이드 (README)
 
-# Getting Started
+이 문서는 본 프로젝트의 **프론트엔드 구조와 컨벤션 적용 방식**을 설명합니다.
+팀의 아키텍처 가이드라인(Atomic Design + DDD)을 바탕으로, 이 프로젝트가 어떻게 구현되었는지를 명확히 전달합니다.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+> ✅ 누구든지 이 README 로 구조를 파악하고 일관된 규칙으로 개발할 수 있도록 작성되었습니다.
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 🚀 프로젝트 개요
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+| 항목        | 내용                              |
+| ----------- | --------------------------------- |
+| 프레임워크  | React 19 / RN 0.78.3              |
+| 스타일      | RN StyleSheet                     |
+| 상태관리    | Zustand + React Query             |
+| API 통신    | RESTful API 기반, Axios 래퍼 사용 |
+| 타입 시스템 | TypeScript                        |
+| 테스트      |                                   |
+| 배포 환경   | OS Platform                       |
 
-```sh
-# Using npm
-npm start
+---
 
-# OR using Yarn
-yarn start
+## 설치 및 실행
+
+```shell
+# 의존성 설치
+yarn install // or yarn && postinstall
+
+# 로컬환경 안드로이드 개발
+yarn android:dev
+
+# 로컬환경 안드로이드 운영
+yarn android:pro
+
+# 로컬환경 iOS 개발
+yarn ios:dev
+
+# 로컬환경 iOS 운영
+yarn ios:pro
+
+# 안드로이드 개발 apk 빌드
+yarn android:dev-apk
+
+# 안드로이드 운영 apk 빌드
+yarn android:dev-apk
+
+# 안드로이드 운영 aab 빌드
+yarn android:pro-aab
+
+# 코드푸쉬
+# 안드로이드 개발
+yarn codepush:android:dev
+# 안드로이드 운영
+yarn codepush:android:pro
+# iOS 개발
+yarn codepush:ios:dev
+# iOS 운영
+yarn codepush:ios:pro
 ```
 
-## Step 2: Build and run your app
+## 📁 폴더 구조 요약
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+```bash
+/src
+  /assets
+  /components            # 전역 UI (Atomic Design 기준)
+    /atoms
+    /molecules
+    /organisms
+    /templates
+    /ui                 # UI Kit 래핑 (shadcn, Radix 등)
 
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+#   /features              # 기능(Domain) 단위 (DDD 기반)
+#     /user
+#       /components        # 도메인 내부 컴포넌트
+#       /api               # API 모듈 (fetch 중심)
+#       /services          # 유즈케이스 / 상태 기반 서비스
+#       /hooks             # 비즈니스 훅
+#       /screens             # 도메인 페이지 단위
+#     /shared
+#       /components
+#       /api
+#       /services
+#       /hooks
+#       /screens            # 공용 도메인
+  /screens
+  /navigation
+  /store                 # 글로벌 상태 저장소 (Zustand)
+  /lib                   # 공통 유틸, 포맷터, 날짜 등
+  /types                 # 전역 타입
+  /constants             # 전역 상수
+  /styles                # 전역 Tailwind, Theme 정의
 ```
 
-### iOS
+---
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## 🎨 Atomic Design 계층 기준
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+| 레벨        | 설명                               | 위치                                                 |
+| ----------- | ---------------------------------- | ---------------------------------------------------- |
+| Atom        | 가장 작은 UI 요소 (Button, Input)  | `/components/atoms`                                  |
+| Molecule    | Atom들의 조합 (LabeledInput 등)    | `/components/molecules`                              |
+| Organism    | 기능적 UI 단위 (Header, LoginForm) | `/components/organisms` 또는 `/components/organisms` |
+| Template    | 레이아웃 스켈레톤 (PageWrapper 등) | `/components/templates`                              |
+| Page/Screen | 실제 페이지 또는 화면              | `/pages`, `/screens`                                 |
 
-```sh
-bundle install
-```
+---
 
-Then, and every time you update your native dependencies, run:
+## 도메인 분리 기준 (DDD 기반)
 
-```sh
-bundle exec pod install
-```
+- ✅ 외부에서 재사용 가능한 컴포넌트는 `/components` (전역)으로 추출
+- ✅ 비즈니스 로직, API 종속성, 의미 있는 기능 단위 UI는 `/components/organisms/{domain}` 내부에 배치
+- ✅ `api/`, `services/`, `hooks/`는 명확하게 역할 구분하여 관심사 분리 유지
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+---
 
-```sh
-# Using npm
-npm run ios
+## 네이밍 컨벤션 요약
 
-# OR using Yarn
-yarn ios
-```
+| 구분            | 예시                                    |
+| --------------- | --------------------------------------- |
+| 훅 파일         | `useUserForm.ts` / `useTimer.ts`        |
+| API 함수        | `getUserAPI`, `postLoginAPI`            |
+| 컴포넌트        | `UserCard`, `LoginForm` (PascalCase)    |
+| 타입/인터페이스 | `UserDto`, `LoginParams`, `ButtonProps` |
+| enum / 상수     | `USER_ROLE`, `ERROR_MESSAGE`            |
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+> 📌 전체 네이밍 규칙은 팀 컨벤션 문서에 상세 명시됨
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+---
 
-## Step 3: Modify your app
+## 환경 변수
 
-Now that you have successfully run the app, let's make changes!
+#### 환경 변수는 프로젝트의 Root의 위치하여 사용합니다.
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+- .env.development
+- .env.local
+- .env.production
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+---
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## 참고 문서 ( 링크 준비중 )
 
-## Congratulations! :tada:
+- [팀 아키텍처 가이드](./docs/architecture-guide.md)
+- [컴포넌트 설계 기준표](./docs/component-standard.md)
+- [도메인 분리 기준 체크리스트](./docs/domain-split-checklist.md)
+- [PR & 코드리뷰 규칙](./docs/pr-review.md)
 
-You've successfully run and modified your React Native App. :partying_face:
+---
 
-### Now what?
+## 참조
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+> 이 README는 프로젝트 구조를 빠르게 이해하고, 팀의 컨벤션에 따라 개발하기 위한 출발점입니다.
+>
+> **구조가 변경될 경우 반드시 README도 함께 갱신**해주세요
