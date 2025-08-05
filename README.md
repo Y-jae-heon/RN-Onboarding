@@ -69,8 +69,6 @@ yarn codepush:ios:pro
     /molecules
     /organisms
     /templates
-    /ui                 # UI Kit 래핑 (shadcn, Radix 등)
-
 #   /features              # 기능(Domain) 단위 (DDD 기반)
 #     /user
 #       /components        # 도메인 내부 컴포넌트
