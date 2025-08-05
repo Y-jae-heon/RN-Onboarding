@@ -13,7 +13,7 @@
 | ----------- | --------------------------------- |
 | 프레임워크  | React 19 / RN 0.78.3              |
 | 스타일      | RN StyleSheet                     |
-| 상태관리    | Zustand + React Query             |
+| 상태관리    | Zustand + Async Storage           |
 | API 통신    | RESTful API 기반, Axios 래퍼 사용 |
 | 타입 시스템 | TypeScript                        |
 | 테스트      |                                   |
@@ -134,7 +134,6 @@ yarn codepush:ios:pro
 #### 환경 변수는 프로젝트의 Root의 위치하여 사용합니다.
 
 - .env.development
-- .env.local
 - .env.production
 
 ---
