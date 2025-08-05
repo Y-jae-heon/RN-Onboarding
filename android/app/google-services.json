@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "908551386568",
+    "project_id": "onboarding-45cea",
+    "storage_bucket": "onboarding-45cea.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908551386568:android:a1b720c423fa38a72dbcfd",
+        "android_client_info": {
+          "package_name": "com.fox.ReactNativeOnboarding"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOD8qllMFoxtKDe2ekaEs5X90cjktEIto"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908551386568:android:5c8e1ab27361f8572dbcfd",
+        "android_client_info": {
+          "package_name": "com.fox.ReactNativeOnboarding.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOD8qllMFoxtKDe2ekaEs5X90cjktEIto"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

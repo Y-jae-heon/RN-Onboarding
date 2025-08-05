@@ -5,6 +5,7 @@
  * @format
  */
 
+import CodePush, { CodePushOptions } from '@revopush/react-native-code-push';
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
@@ -15,6 +16,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import Config from 'react-native-config';
 
 import {
   Colors,
@@ -27,6 +29,10 @@ import {
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
+
+const codePushOptions: CodePushOptions = {
+  checkFrequency: CodePush.CheckFrequency.MANUAL, // or ON_APP_START, MANUAL
+};
 
 function Section({children, title}: SectionProps): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -92,6 +98,7 @@ function App(): React.JSX.Element {
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
+            Config: {Config.MODE}
           </Section>
           <Section title="See Your Changes">
             <ReloadInstructions />
@@ -128,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default CodePush(codePushOptions)(App);

@@ -4,14 +4,25 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android:dev": "react-native run-android --appIdSuffix=dev --mode=developmentdebug",
+    "android:pro": "react-native run-android --mode=productiondebug",
     "ios": "react-native run-ios",
+    "ios:dev": "react-native run-ios --scheme ReactNativeOnboardingDev --mode DevelopmentDebug",
+    "ios:pro": "react-native run-ios --scheme ReactNativeOnboarding --mode ProductionDebug",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "codepush:android:dev": "revopush release-react RN-Onboarding-android android -d Development",
+    "codepush:android:pro": "revopush release-react RN-Onboarding-android android -d Production",
+    "codepush:ios:dev": "revopush release-react RN-Onboarding-ios ios -d Development",
+    "codepush:ios:pro": "revopush release-react RN-Onboarding-ios ios -d Production",
+    "postinstall": "cd ios && pod install && cd .."
   },
   "dependencies": {
+    "@react-native-firebase/app": "22.3.0",
     "react": "19.0.0",
-    "react-native": "0.78.3"
+    "react-native": "0.78.3",
+    "react-native-config": "^1.5.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -24,6 +35,7 @@
     "@react-native/eslint-config": "0.78.3",
     "@react-native/metro-config": "0.78.3",
     "@react-native/typescript-config": "0.78.3",
+    "@revopush/react-native-code-push": "^1.2.0",
     "@types/jest": "^29.5.13",
     "@types/react": "^19.0.0",
     "@types/react-test-renderer": "^19.0.0",

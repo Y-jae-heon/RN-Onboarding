@@ -5,8 +5,15 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-platform :ios, min_ios_version_supported
+platform :ios, '16.0'
 prepare_react_native_project!
+
+project 'ReactNativeOnboarding', {
+  'DevelopmentDebug' => :debug,
+  'ProductionDebug' => :debug,
+  'DevelopmentRelease' => :release,
+  'ProductionRelease' => :release
+}
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -16,6 +23,16 @@ end
 
 target 'ReactNativeOnboarding' do
   config = use_native_modules!
+
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'FirebaseCoreExtension', :modular_headers => true
+  pod 'FirebaseCrashlytics', :modular_headers => true
+  pod 'FirebaseSessions', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'FirebaseInstallations', :modular_headers => true
+  pod 'GoogleDataTransport', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'nanopb', :modular_headers => true
 
   use_react_native!(
     :path => config[:reactNativePath],

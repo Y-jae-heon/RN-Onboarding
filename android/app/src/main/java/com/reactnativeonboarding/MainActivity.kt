@@ -1,4 +1,4 @@
-package com.reactnativeonboarding
+package com.fox.ReactNativeOnboarding
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
